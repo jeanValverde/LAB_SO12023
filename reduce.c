@@ -1,0 +1,3 @@
+void funB() { 
+  printf("Hello"); 
+}
