@@ -1,5 +1,3 @@
-#include "estructura.c"
-
 #ifndef MAPEO
 #define MAPEO
 

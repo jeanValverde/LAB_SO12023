@@ -2,8 +2,15 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
+#include "vehiculo.c"
 #include "util.c"
 #include "mapeo.c"
+
+/**
+1. Indicar tasacion total para cada grupo de vehiculo #LLAVE: GRUPO
+2. Indicar el total del valor pagado para cada grupo de vehiculo. #LLAVE: GRUPO
+3. Indicar para cada grupo de vehiculo la cantidad de vehiculos con dos y cuatro puertas. #LLAVE: GRUPO
+*/
 
 Vehiculo vehiculos[10000]; //vehiculos y la cantidad maxima 
 int RECUENTO = 0; //recuento real de lineas en la lectura del csv
@@ -126,9 +133,8 @@ int main(int argc, char *argv[])
   //leer el archivo 
   get_data_csv(path_csv, lines); 
 
-  map(filter_by_grupo,RECUENTO,vehiculos,"Vehiculo Liviano");
+  map(filter_by_grupo,RECUENTO,vehiculos);
 
-  print_vehiculos(resultados);
 
   return 0;
 }
