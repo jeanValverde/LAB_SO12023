@@ -1,19 +1,13 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
+#include <ctype.h>
+#include "util.c"
+#include "mapeo.c"
 
-//Grupo Vehiculo   #0 
-//Tasacion         #5 
-//Numero Puertas   #22
-//Valor Pagado     #10
 
-typedef struct
-{
-  char *grupo;
-  int tasacion;
-  int numero_puertas;
-  int valor_pagado;
-} Vehiculo;
+Vehiculo vehiculos[10000]; //vehiculos y la cantidad maxima 
+int RECUENTO = 0; //recuento real de lineas en la lectura del csv
 
 
 /**
@@ -52,9 +46,16 @@ void end(char mensaje[]){
  * @param char lines (numero de linea para leer en el csv)
 */
 void is_valid_lines(char *lines){
-  if(lines == 0){
+  int num = atoi(lines);
+
+  if(num == 0){
     end("Debe ingresar un numero de lineas para leer el csv.   ");
   }
+
+  if(num < 0){
+    end("Debe ingresar un numero mayor a 0.");
+  }
+
 }
 
 /**
@@ -98,14 +99,36 @@ void print_vehiculo(Vehiculo vehiculo){
   printf("\n");
 }
 
+
+/**
+ * @return void 
+ * @def recorrer por pantalla un vehiculo
+ * @param vehiculo 
+*/
+void print_vehiculos(Vehiculo vehiculo[]){
+  int count = 0;
+  for (int i = 0; i < RECUENTO; i++) {
+    if(vehiculo[i].grupo != NULL){
+      print_vehiculo(vehiculo[i]);
+      count++;
+    } 
+  }
+  printf("\nprint %d filas.\n", count );
+}
+
+/**
+ * @return void 
+ * @def lee linea por linea el csv y crea vehiculos 
+ * @param path, lines  
+*/
 void get_data_csv(char *path_csv, char *lines){
   FILE *csv = read_csv(path_csv);
   int max_lines = atoi(lines);
   char row[max_lines];
-  //Vehiculo *v = (Vehiculo *)malloc(max_lines * sizeof(Vehiculo));
-  Vehiculo vehiculos[max_lines];
-
+  //Vehiculo vehiculos[max_lines]; 
+  vehiculos[max_lines];
   int count_row = 0;
+
   // Leer línea por línea del archivo CSV
   while (fgets(row, max_lines, csv) != NULL){
 
@@ -143,12 +166,10 @@ void get_data_csv(char *path_csv, char *lines){
     count_row++;
   }
 
+  RECUENTO = count_row;
   printf("\nSe leyeron %d filas en el csv.\n", count_row );
-
   fclose(csv);
 }
-
-
 
 
 int main(int argc, char *argv[])
@@ -156,11 +177,19 @@ int main(int argc, char *argv[])
   //input necesarios 
   char *path_csv =  argv[1];
   char *lines = argv[2];
+
+  //validar input 
   is_path_csv(path_csv);
   is_valid_lines(lines);
   
-  //leer el archivo
-  get_data_csv(path_csv, lines);
+  //leer el archivo 
+  get_data_csv(path_csv, lines); 
+
+  map(filter_by_grupo,RECUENTO,vehiculos,"Vehiculo Liviano");
+
+  print_vehiculos(resultados);
+
+
 
   return 0;
 }
