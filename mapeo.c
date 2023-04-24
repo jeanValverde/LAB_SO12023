@@ -69,10 +69,8 @@ void push_mapeo(char *llave, Vehiculo vehiculo){
 /*
 *
 */
-void filter_by_grupo(Vehiculo vehiculo){  
-  push_mapeo("Carga",vehiculo);
-  push_mapeo("Transporte Publico",vehiculo);
-  push_mapeo("Vehiculo Liviano",vehiculo);
+void filter_by_grupo(Vehiculo vehiculo){   
+  push_mapeo(trim(vehiculo.grupo),vehiculo); 
 }
 
 

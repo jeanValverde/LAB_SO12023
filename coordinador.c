@@ -133,6 +133,7 @@ int main(int argc, char *argv[])
   //leer el archivo 
   get_data_csv(path_csv, lines); 
 
+  //mapea y aplica el filtro relacionado
   map(filter_by_grupo,RECUENTO,vehiculos);
 
 
