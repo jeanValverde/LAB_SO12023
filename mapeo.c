@@ -56,6 +56,7 @@ void push_mapeo(char *llave, Vehiculo vehiculo){
     mapeo.vehiculos[mapeo.count_vehiculos] = vehiculo;
     mapeo.count_vehiculos = mapeo.count_vehiculos + 1;
     resultados[unicos] = mapeo;
+    unicos++;
   }else{
     //agrega solo el nuevo vehiculo 
     int next = resultados[existe].count_vehiculos;
