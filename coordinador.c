@@ -5,40 +5,9 @@
 #include "util.c"
 #include "mapeo.c"
 
-
 Vehiculo vehiculos[10000]; //vehiculos y la cantidad maxima 
 int RECUENTO = 0; //recuento real de lineas en la lectura del csv
 
-
-/**
- * @return void 
- * @def imprime por pantalla un mensaje
- * @param char mensaje 
-*/
-void escribir(char mensaje[]){
-  printf("%c\n    ", mensaje);
-}
-
-/**
- * @return FILE
- * @def Lee un archivo con una ruta absoluta  
- * @param char path (ruta absoluta)    
-*/
-FILE *read_csv(char *path_csv)
-{
-  FILE *fp = fopen(path_csv, "r");
-  return fp;
-}
-
-/**
- * @return void
- * @def Imprime por pantalla un mensaje y sale de la aplicacion 
- * @param char mensaje
-*/
-void end(char mensaje[]){
-  printf(mensaje);
-  exit(1);
-}
 
 /**
  * @return void 
@@ -72,35 +41,6 @@ void is_path_csv(char *path_csv){
 }
 
 /**
- * @return Vehiculo vacio 
- * @param none 
- * @def crea un vehciulo vacio 
-*/
-Vehiculo new_vehiculo(){
-  Vehiculo vehiculo;
-  vehiculo.grupo = "SIN GRUPO";
-  vehiculo.tasacion = 0;
-  vehiculo.valor_pagado = 0;
-  vehiculo.numero_puertas = 0;
-  return vehiculo;
-}
-
-/**
- * @return void 
- * @def imprimir por pantalla un vehiculo
- * @param vehiculo 
-*/
-void print_vehiculo(Vehiculo vehiculo){
-  printf("\n");
-  printf("Grupo: %s\n",vehiculo.grupo);
-  printf("Tasacion: %d\n",vehiculo.tasacion);
-  printf("Valor Pagado: %d\n",vehiculo.valor_pagado);
-  printf("Numero de Puertas: %d\n",vehiculo.numero_puertas);
-  printf("\n");
-}
-
-
-/**
  * @return void 
  * @def recorrer por pantalla un vehiculo
  * @param vehiculo 
@@ -115,6 +55,7 @@ void print_vehiculos(Vehiculo vehiculo[]){
   }
   printf("\nprint %d filas.\n", count );
 }
+
 
 /**
  * @return void 
@@ -188,8 +129,6 @@ int main(int argc, char *argv[])
   map(filter_by_grupo,RECUENTO,vehiculos,"Vehiculo Liviano");
 
   print_vehiculos(resultados);
-
-
 
   return 0;
 }

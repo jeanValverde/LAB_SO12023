@@ -22,3 +22,33 @@ char* trim(char* str) {
   
   return str;
 }
+
+/**
+ * @return void
+ * @def Imprime por pantalla un mensaje y sale de la aplicacion 
+ * @param char mensaje
+*/
+void end(char mensaje[]){
+  printf(mensaje);
+  exit(1);
+}
+
+/**
+ * @return void 
+ * @def imprime por pantalla un mensaje
+ * @param char mensaje 
+*/
+void escribir(char mensaje[]){
+  printf("%c\n    ", mensaje);
+}
+
+/**
+ * @return FILE
+ * @def Lee un archivo con una ruta absoluta  
+ * @param char path (ruta absoluta)    
+*/
+FILE *read_csv(char *path_csv)
+{
+  FILE *fp = fopen(path_csv, "r");
+  return fp;
+}
