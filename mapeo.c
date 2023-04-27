@@ -56,6 +56,7 @@ void push_mapeo(char llave[100], struct Permiso permiso){
   if(existe == -1){  
     struct Mapeo mapeo;  
     strcpy(mapeo.llave,llave); 
+    mapeo.count_permisos = 0;
     mapeo.permisos[mapeo.count_permisos] = permiso;
     mapeo.count_permisos = mapeo.count_permisos + 1; 
     resultados_mapeo[num_mapeos] = mapeo; 
@@ -72,7 +73,7 @@ void push_mapeo(char llave[100], struct Permiso permiso){
 
 
 /*
-*funcion para indicar el tipo de mapeo a utilizar
+*funcion para indicar el tipo de mapeo a utilizar o llave 
 */
 void filter_by_grupo(struct Permiso permiso){    
   push_mapeo(permiso.grupo, permiso); 
