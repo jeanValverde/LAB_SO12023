@@ -48,15 +48,14 @@ int search(char llave[100]){
 /**
  * agrega un nuevo mapeo
 */
-void push_mapeo(int num_permiso){
+void push_mapeo(char llave[100], struct Permiso permiso){
 
-  struct Permiso permiso = get_permiso(num_permiso); 
-  int existe = search(permiso.grupo); 
+  int existe = search(llave); 
   //printf(" resutado de la busqueda: %s %d \n", permiso.grupo,  existe);
   
   if(existe == -1){  
     struct Mapeo mapeo;  
-    strcpy(mapeo.llave,permiso.grupo);
+    strcpy(mapeo.llave,llave); 
     mapeo.permisos[mapeo.count_permisos] = permiso;
     mapeo.count_permisos = mapeo.count_permisos + 1; 
     resultados_mapeo[num_mapeos] = mapeo; 
@@ -71,20 +70,22 @@ void push_mapeo(int num_permiso){
   
 }
 
+
 /*
 *funcion para indicar el tipo de mapeo a utilizar
 */
-void filter_by_grupo(int num_permiso){    
-  push_mapeo(num_permiso); 
+void filter_by_grupo(struct Permiso permiso){    
+  push_mapeo(permiso.grupo, permiso); 
 }
 
 
 /**
  * Aplicar el mapeo segun la regla o funcion indicada 
 */
-void map(void (*filter)(int)) { 
+void map(void (*filter)(struct Permiso)) { 
   for (int i = 0; i < get_cantidad_permisos() ; i++) {   
-    filter(i); 
+    //struct Permiso permiso = get_permiso(i); 
+    filter(permisos[i]); 
   }
 }
 

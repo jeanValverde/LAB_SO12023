@@ -118,7 +118,7 @@ int main(int argc, char *argv[])
   //mapea y aplica el filtro relacionado
   map(filter_by_grupo);
 
-  //print_mapeos();
+  print_mapeos();
 
 
   return 0;
