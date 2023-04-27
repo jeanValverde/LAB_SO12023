@@ -2,18 +2,16 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>
-#include "vehiculo.c"
+//#include "vehiculo.c"
 #include "util.c"
-#include "mapeo.c"
+//#include "mapeo.c"
+#include "permiso.c"
 
 /**
 1. Indicar tasacion total para cada grupo de vehiculo #LLAVE: GRUPO
 2. Indicar el total del valor pagado para cada grupo de vehiculo. #LLAVE: GRUPO
 3. Indicar para cada grupo de vehiculo la cantidad de vehiculos con dos y cuatro puertas. #LLAVE: GRUPO
 */
-
-Vehiculo vehiculos[10000]; //vehiculos y la cantidad maxima 
-int RECUENTO = 0; //recuento real de lineas en la lectura del csv
 
 
 /**
@@ -49,23 +47,6 @@ void is_path_csv(char *path_csv){
 
 /**
  * @return void 
- * @def recorrer por pantalla un vehiculo
- * @param vehiculo 
-*/
-void print_vehiculos(Vehiculo vehiculo[]){
-  int count = 0;
-  for (int i = 0; i < RECUENTO; i++) {
-    if(vehiculo[i].grupo != NULL){
-      print_vehiculo(vehiculo[i]);
-      count++;
-    } 
-  }
-  printf("\nprint %d filas.\n", count );
-}
-
-
-/**
- * @return void 
  * @def lee linea por linea el csv y crea vehiculos 
  * @param path, lines  
 */
@@ -73,55 +54,53 @@ void get_data_csv(char *path_csv, char *lines){
   FILE *csv = read_csv(path_csv);
   int max_lines = atoi(lines);
   char row[max_lines];
-  //Vehiculo vehiculos[max_lines]; 
-  vehiculos[max_lines];
   int count_row = 0;
-
+   
   // Leer línea por línea del archivo CSV
   while (fgets(row, max_lines, csv) != NULL){
 
     // Dividir la línea en campos separados por ";"
-    char *row_read = strtok(row, ";");
+    char *row_read = NULL;
+    row_read = strtok(row, ";");
     int columna = 0; 
-    Vehiculo vehiculo = new_vehiculo();
-  
+    struct Permiso permiso;
+    
     while (row_read != NULL) {
-      
-      if(columna == 0){ 
-        vehiculo.grupo = row_read;
-      }
+
+      if(columna == 0){  
+        strcpy(permiso.grupo,row_read);
+      } 
 
       if(columna == 5){
         int value = atoi(row_read);
-        vehiculo.tasacion = value;
+        permiso.tasacion = value;
       }
 
       if(columna == 10){
         int value = atoi(row_read);
-        vehiculo.valor_pagado = value;
+        permiso.valor_pagado = value;
       }
 
       if(columna == 22){
         int value = atoi(row_read);
-        vehiculo.numero_puertas = value;
+        permiso.numero_puertas = value;
       }
-
-      row_read = strtok(NULL, ";");
+      
+      row_read = strtok(NULL, ";");   
       columna++;
     }
-
-    vehiculos[count_row] = vehiculo;
-    count_row++;
+   
+    add_permiso(permiso);  
   }
 
-  RECUENTO = count_row;
-  printf("\nSe leyeron %d filas en el csv.\n", count_row );
+  printf("\nSe leyeron %d filas en el csv.\n", get_cantidad_permisos() );
   fclose(csv);
 }
 
 
 int main(int argc, char *argv[])
 {
+
   //input necesarios 
   char *path_csv =  argv[1];
   char *lines = argv[2];
@@ -133,8 +112,10 @@ int main(int argc, char *argv[])
   //leer el archivo 
   get_data_csv(path_csv, lines); 
 
+  print_permisos();
+
   //mapea y aplica el filtro relacionado
-  map(filter_by_grupo,RECUENTO,vehiculos);
+  //map(filter_by_grupo,RECUENTO,vehiculos);
 
 
   return 0;
