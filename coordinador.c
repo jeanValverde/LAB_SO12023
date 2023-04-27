@@ -51,42 +51,44 @@ void get_data_csv(char *path_csv, char *lines){
   int max_lines = atoi(lines);
   char row[max_lines];
   int count_row = 0;
-   
+  
+  int lectura = 0;
   // Leer línea por línea del archivo CSV
   while (fgets(row, max_lines, csv) != NULL){
-
-    // Dividir la línea en campos separados por ";"
-    char *row_read = NULL;
-    row_read = strtok(row, ";");
-    int columna = 0; 
-    struct Permiso permiso;
-    
-    while (row_read != NULL) {
-
-      if(columna == 0){  
-        strcpy(permiso.grupo,row_read);
-      } 
-
-      if(columna == 5){
-        int value = atoi(row_read);
-        permiso.tasacion = value;
-      }
-
-      if(columna == 10){
-        int value = atoi(row_read);
-        permiso.valor_pagado = value;
-      }
-
-      if(columna == 22){
-        int value = atoi(row_read);
-        permiso.numero_puertas = value;
-      }
+    if(lectura > 0){
+      // Dividir la línea en campos separados por ";"
+      char *row_read = NULL;
+      row_read = strtok(row, ";");
+      int columna = 0; 
+      struct Permiso permiso;
       
-      row_read = strtok(NULL, ";");   
-      columna++;
-    }
-   
-    add_permiso(permiso);  
+      while (row_read != NULL) {
+
+        if(columna == 0){  
+          strcpy(permiso.grupo,row_read);
+        } 
+
+        if(columna == 5){
+          int value = atoi(row_read);
+          permiso.tasacion = value;
+        }
+
+        if(columna == 10){
+          int value = atoi(row_read);
+          permiso.valor_pagado = value;
+        }
+
+        if(columna == 22){
+          int value = atoi(row_read);
+          permiso.numero_puertas = value;
+        }
+        
+        row_read = strtok(NULL, ";");   
+        columna++;
+      }
+      add_permiso(permiso);  
+    } 
+    lectura++;
   }
 
   printf("\nSe leyeron %d filas en el csv.\n", get_cantidad_permisos() );
