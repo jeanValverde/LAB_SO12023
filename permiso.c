@@ -15,6 +15,11 @@ void add_permiso(struct Permiso permiso) {
   num_permisos++;
 }
 
+struct Permiso get_permiso(int num_permiso){
+    return permisos[num_permiso];
+}
+
+
 int get_cantidad_permisos(){
     return num_permisos;
 }
@@ -46,4 +51,5 @@ void print_permisos() {
   }
   printf("\nprint %d filas. \n", count );
 }
+
 

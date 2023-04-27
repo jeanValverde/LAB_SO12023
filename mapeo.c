@@ -1,60 +1,27 @@
-#include "mapeo.h"
-#include <stdio.h>
-#include <string.h>
-#include <stdlib.h>
-#include <stdbool.h>
+#define MAX_MAP 300
 
-typedef struct
-{
-  char *llave;
-  Vehiculo vehiculos[10000];
-  int count_vehiculos;
-} Mapeo;
+struct Mapeo {
+  char llave[100];
+  struct Permiso permisos[MAX_PERMISOS];
+  int count_permisos;
+};
 
-Mapeo resultados_mapeo[100]; //soporte para 100 grupos unicos
-int unicos = 0; //cantidad mapeada 
+struct Mapeo resultados_mapeo[MAX_MAP]; //soporte para 100 grupos unicos
+int num_mapeos = 0; //cantidad mapeada 
 
-/**
- * verifica que exista una y solo una llave
- * -1: podemos ingresarla nueva
- * <> -1: existe retorna el indice
-*/
-int search(char *llave){
-  for (int i = 0; i < unicos ; i++) {
-    if(resultados_mapeo[i].llave != NULL){
-      //revisar 
-      if(resultados_mapeo[i].llave == llave){
-        //printf("ENCONTRADO %S ==  %S \n", resultados_mapeo[i].llave, llave );
-        return unicos;
-      }
-    }
-  }
-
-  return -1;
-}
-
-/**
- * mapeo vacio
-*/
-Mapeo new_mapeo(char *llave){
-  Mapeo mapeo;
-  mapeo.llave = llave;
-  mapeo.count_vehiculos = 0; 
-  mapeo.vehiculos[0] = new_vehiculo();
-  return mapeo;
-}
-
-void print_mapeo(Mapeo mapeo){
-  printf("\n");
-  printf(mapeo.llave);
+void print_mapeo(struct Mapeo mapeo){
+  printf("\n------------------------------------------\n");   
   printf("Llave: %s\n",mapeo.llave);
-  printf("Cantidad de vehiculos: %d\n",mapeo.count_vehiculos);
-  printf("\n");
+  printf("Cantidad de permisos: %d\n",mapeo.count_permisos);
+  for (int i = 0; i < mapeo.count_permisos; i++) {
+    print_permiso(mapeo.permisos[i]); 
+  }
+  printf("\n------------------------------------------\n");   
 }
 
 void print_mapeos(){
-  printf("\nCantidad de mapeos: %d\n", unicos);
-  for (int i = 0; i < unicos ; i++) {
+  printf("\nCantidad de mapeos: %d\n", num_mapeos);
+  for (int i = 0; i < num_mapeos ; i++) {
     if(resultados_mapeo[i].llave != NULL){
       print_mapeo(resultados_mapeo[i]);
     }
@@ -62,47 +29,62 @@ void print_mapeos(){
 }
 
 /**
+ * verifica que exista una y solo una llave
+ * -1: podemos ingresarla nueva
+ * <> -1: existe retorna el indice
+*/
+int search(char llave[100]){  
+  int indiceMapeo = -1; 
+  for (int i = 0; i < num_mapeos ; i++) { 
+    int equals = strcmp(resultados_mapeo[i].llave, llave);
+    if(equals == 0){  
+      indiceMapeo = i;
+    }
+  }  
+  return indiceMapeo;
+}
+
+
+/**
  * agrega un nuevo mapeo
 */
-void push_mapeo(char *llave, Vehiculo vehiculo){
-  printf(llave);
+void push_mapeo(int num_permiso){
 
-  int existe = search(llave);
+  struct Permiso permiso = get_permiso(num_permiso); 
+  int existe = search(permiso.grupo); 
+  //printf(" resutado de la busqueda: %s %d \n", permiso.grupo,  existe);
   
   if(existe == -1){  
-    Mapeo mapeo = new_mapeo(llave); 
-    print_mapeo(mapeo); 
-    mapeo.vehiculos[mapeo.count_vehiculos] = vehiculo;
-    mapeo.count_vehiculos = mapeo.count_vehiculos + 1;
-    resultados_mapeo[unicos] = mapeo;
-    unicos++; 
+    struct Mapeo mapeo;  
+    strcpy(mapeo.llave,permiso.grupo);
+    mapeo.permisos[mapeo.count_permisos] = permiso;
+    mapeo.count_permisos = mapeo.count_permisos + 1; 
+    resultados_mapeo[num_mapeos] = mapeo; 
+    num_mapeos++; 
   }else{
-    //agrega solo el nuevo vehiculo 
-    int next = resultados_mapeo[existe].count_vehiculos;
-    resultados_mapeo[existe].vehiculos[next] = vehiculo;
-    resultados_mapeo[existe].count_vehiculos = next+1;
+    //agrega solo el nuevo vehiculo  
+    int next = resultados_mapeo[existe].count_permisos;
+    resultados_mapeo[existe].permisos[next] = permiso;
+    resultados_mapeo[existe].count_permisos = next+1;
   }
+  
   
 }
 
 /*
 *funcion para indicar el tipo de mapeo a utilizar
 */
-void filter_by_grupo(Vehiculo vehiculo){  
-  //char *posible_llave = trim(vehiculo.grupo); 
-  //printf("%s    \n",vehiculo.grupo);
-  //push_mapeo(vehiculo.grupo,vehiculo); 
+void filter_by_grupo(int num_permiso){    
+  push_mapeo(num_permiso); 
 }
 
 
 /**
  * Aplicar el mapeo segun la regla o funcion indicada 
 */
-void map(void (*filter)(Vehiculo), int count, Vehiculo vehiculos[]) {
-  int nuevo = 0;
-  for (int i = 0; i < count ; i++) {
-    //filter(vehiculos[i]); 
-    printf("%d  %s\n",i,vehiculos[i].grupo);
+void map(void (*filter)(int)) { 
+  for (int i = 0; i < get_cantidad_permisos() ; i++) {   
+    filter(i); 
   }
 }
 

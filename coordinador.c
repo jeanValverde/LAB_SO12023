@@ -1,11 +1,12 @@
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
-#include <ctype.h>
-//#include "vehiculo.c"
+#include <ctype.h>  
+#include <stdbool.h>
+
 #include "util.c"
-//#include "mapeo.c"
 #include "permiso.c"
+#include "mapeo.c"
 
 /**
 1. Indicar tasacion total para cada grupo de vehiculo #LLAVE: GRUPO
@@ -112,10 +113,12 @@ int main(int argc, char *argv[])
   //leer el archivo 
   get_data_csv(path_csv, lines); 
 
-  print_permisos();
+  //print_permisos();
 
   //mapea y aplica el filtro relacionado
-  //map(filter_by_grupo,RECUENTO,vehiculos);
+  map(filter_by_grupo);
+
+  //print_mapeos();
 
 
   return 0;
