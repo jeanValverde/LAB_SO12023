@@ -67,8 +67,7 @@ void push_mapeo(char llave[100], struct Permiso permiso){
     resultados_mapeo[existe].permisos[next] = permiso;
     resultados_mapeo[existe].count_permisos = next+1;
   }
-  
-  
+
 }
 
 
@@ -80,13 +79,22 @@ void filter_by_grupo(struct Permiso permiso){
 }
 
 
+int get_num_mapeos(){
+  return num_mapeos;
+}
+
+struct Mapeo get_mapeo(int index){
+  return resultados_mapeo[index]; 
+}
+
+
 /**
  * Aplicar el mapeo segun la regla o funcion indicada 
 */
 void map(void (*filter)(struct Permiso)) { 
   for (int i = 0; i < get_cantidad_permisos() ; i++) {   
-    //struct Permiso permiso = get_permiso(i); 
-    filter(permisos[i]); 
+    struct Permiso permiso = get_permiso(i); 
+    filter(permiso); 
   }
 }
 

@@ -7,12 +7,7 @@
 #include "util.c"
 #include "permiso.c"
 #include "mapeo.c"
-
-/**
-1. Indicar tasacion total para cada grupo de vehiculo #LLAVE: GRUPO
-2. Indicar el total del valor pagado para cada grupo de vehiculo. #LLAVE: GRUPO
-3. Indicar para cada grupo de vehiculo la cantidad de vehiculos con dos y cuatro puertas. #LLAVE: GRUPO
-*/
+#include "reduce.c"
 
 
 /**
@@ -120,6 +115,40 @@ int main(int argc, char *argv[])
 
   print_mapeos();
 
+  //aplicar el reduce sobre una accion determinada a los mapeos
+
+  /**
+  1. Indicar tasacion total para cada grupo de vehiculo #LLAVE: GRUPO
+  2. Indicar el total del valor pagado para cada grupo de vehiculo. #LLAVE: GRUPO
+  3. Indicar para cada grupo de vehiculo la cantidad de vehiculos con dos y cuatro puertas. #LLAVE: GRUPO
+  */
+
+  for (int i = 0; i < get_num_mapeos() ; i++) {  
+    struct Mapeo mapeo = get_mapeo(i);  
+    int resultado = reduce(sumary_by_tasacion, mapeo.llave);
+    printf("Total de tasaciones para %s: %d\n", mapeo.llave , resultado);
+  }
+
+
+  for (int i = 0; i < get_num_mapeos() ; i++) {  
+    struct Mapeo mapeo = get_mapeo(i);  
+    int resultado = reduce(sumary_by_valor_pagado, mapeo.llave);
+    printf("Total de valor pagado para %s: %d\n", mapeo.llave , resultado);
+  }
+
+  
+  for (int i = 0; i < get_num_mapeos() ; i++) {  
+    struct Mapeo mapeo = get_mapeo(i);  
+    int resultado = reduce(sumary_by_dos_puertas, mapeo.llave);
+    printf("Total de vehiculos con 2 puertas para %s: %d\n", mapeo.llave , resultado);
+  }
+
+  for (int i = 0; i < get_num_mapeos() ; i++) {  
+    struct Mapeo mapeo = get_mapeo(i);  
+    int resultado = reduce(sumary_by_cuatro_puertas, mapeo.llave);
+    printf("Total de vehiculos con 4 puertas para %s: %d\n", mapeo.llave , resultado);
+  }
+  
 
   return 0;
 }
