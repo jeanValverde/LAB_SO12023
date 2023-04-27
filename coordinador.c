@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
   //mapea y aplica el filtro relacionado
   map(filter_by_grupo);
 
-  print_mapeos();
+  //print_mapeos();
 
   //aplicar el reduce sobre una accion determinada a los mapeos
 
