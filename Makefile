@@ -23,7 +23,6 @@ clean:
 	rm -f $(TARGET)
 
 run:
-	./$(TARGET)  -i /archivo -c lineas
+	./$(TARGET)  -i /archivo -c lineas -d
 
-
-.PHONY: clean run
+.PHONY: clean 
