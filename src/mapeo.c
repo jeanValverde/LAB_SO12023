@@ -21,10 +21,8 @@ void print_mapeo(struct Mapeo mapeo){
 
 void print_mapeos(){
   printf("\nCantidad de mapeos: %d\n", num_mapeos);
-  for (int i = 0; i < num_mapeos ; i++) {
-    if(resultados_mapeo[i].llave != NULL){
-      print_mapeo(resultados_mapeo[i]);
-    }
+  for (int i = 0; i < num_mapeos ; i++) { 
+      print_mapeo(resultados_mapeo[i]); 
   }
 }
 

@@ -39,7 +39,7 @@ void end(char mensaje[]){
  * @param char mensaje 
 */
 void escribir(char mensaje[]){
-  printf("%c\n    ", mensaje);
+  printf("%s\n    ", mensaje);
 }
 
 /**

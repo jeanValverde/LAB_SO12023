@@ -2,7 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include <ctype.h>  
-#include <stdbool.h>
+#include <stdbool.h>  
+#include <unistd.h>
 
 #include "util.c"
 #include "permiso.c"
@@ -19,11 +20,11 @@ void is_valid_lines(char *lines){
   int num = atoi(lines);
 
   if(num == 0){
-    end("Debe ingresar un numero de lineas para leer el csv.   ");
+    end("Debe ingresar un numero de lineas para leer el csv.\n");
   }
 
   if(num < 0){
-    end("Debe ingresar un numero mayor a 0.");
+    end("Debe ingresar un numero mayor a 0.\n");
   }
 
 }
@@ -36,7 +37,7 @@ void is_valid_lines(char *lines){
 void is_path_csv(char *path_csv){
   FILE *csv = read_csv(path_csv);
   if(csv == NULL){ 
-    end("Debe insertar la unicacion del archivo valida.");
+    end("Debe insertar la unicacion del archivo valida.\n");
   }
   fclose(csv);
 }
@@ -49,8 +50,7 @@ void is_path_csv(char *path_csv){
 void get_data_csv(char *path_csv, char *lines){
   FILE *csv = read_csv(path_csv);
   int max_lines = atoi(lines);
-  char row[max_lines];
-  int count_row = 0;
+  char row[max_lines]; 
   
   int lectura = 0;
   // Leer línea por línea del archivo CSV
@@ -99,13 +99,37 @@ void get_data_csv(char *path_csv, char *lines){
 int main(int argc, char *argv[])
 {
 
-  //input necesarios 
-  char *path_csv =  argv[1];
-  char *lines = argv[2];
+   int c;
+   char *path_csv = "/";
+   int debug = 0;
+   char *lines = 0;
 
+    while ((c = getopt(argc, argv, "i:c:d")) != -1) {
+        switch (c) {
+            case 'i':  
+                path_csv = optarg; 
+                break;
+            case 'c': 
+                lines = optarg;
+                break;
+            case 'd':
+                debug = 1;  
+                break;
+            case '?':
+                fprintf(stderr, "Opción desconocida `-%c'.\n", optopt);
+                return 1;
+            default:
+                abort();
+        }
+    }
+ 
   //validar input 
   is_path_csv(path_csv);
   is_valid_lines(lines);
+
+  if(debug == 1){
+    printf("Opción -d debug habilitada\n.");
+  } 
   
   //leer el archivo 
   get_data_csv(path_csv, lines); 
@@ -119,11 +143,11 @@ int main(int argc, char *argv[])
 
   //aplicar el reduce sobre una accion determinada a los mapeos
 
-  /**
+  /*
   1. Indicar tasacion total para cada grupo de vehiculo #LLAVE: GRUPO
   2. Indicar el total del valor pagado para cada grupo de vehiculo. #LLAVE: GRUPO
   3. Indicar para cada grupo de vehiculo la cantidad de vehiculos con dos y cuatro puertas. #LLAVE: GRUPO
-  */
+   */
 
   for (int i = 0; i < get_num_mapeos() ; i++) {  
     struct Mapeo mapeo = get_mapeo(i);  
@@ -150,8 +174,7 @@ int main(int argc, char *argv[])
     int resultado = reduce(sumary_by_cuatro_puertas, mapeo.llave);
     printf("Total de vehiculos con 4 puertas para %s: %d\n", mapeo.llave , resultado);
   }
-  
+    
 
   return 0;
 }
-
