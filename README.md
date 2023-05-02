@@ -40,6 +40,16 @@ sus entradas, funcionamiento y salida. Si una funci´on no est´a explicada se b
 m´ınima.
 
  
+## Run for MakeFile
+
+```
+  make
+```
+
+```
+  ./programa -i [ubicacion CSV] -c [LINEAS] [ -d  opcional] 
+```
+
 
 ## License
 
